@@ -145,7 +145,8 @@ public extension UICollectionView {
     func reload<C>(
         using stagedChangeset: StagedChangeset<C>,
         interrupt: ((Changeset<C>) -> Bool)? = nil,
-        setData: (C) -> Void
+        setData: (C) -> Void,
+        completion: @escaping (Bool) -> Void
         ) {
         if case .none = window, let data = stagedChangeset.last?.data {
             setData(data)
@@ -194,7 +195,7 @@ public extension UICollectionView {
                 for (source, target) in changeset.elementMoved {
                     moveItem(at: IndexPath(item: source.element, section: source.section), to: IndexPath(item: target.element, section: target.section))
                 }
-            })
+            }, completion: completion)
         }
 
         if contentSize.height > bounds.size.height {
